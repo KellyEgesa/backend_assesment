@@ -5,7 +5,7 @@ const port = 3000;
 
 app.get("/", async (req, res) => {
   let responses: BookService = new BookService();
-  res.send(await responses.fetchBooks("", res));
+  res.send(await responses.fetchOneBook("10", res));
 });
 
 app.listen(port, () => {
