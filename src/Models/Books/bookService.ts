@@ -2,7 +2,7 @@ import axios from "axios";
 import { Book } from "./books";
 import { url } from "../../Utils/Strings";
 
-let urlBook: string = url + "/books";
+let urlBook: string = url + "/books?pageSize=100";
 
 export class BookService {
   async fetchBooks(response: any) {
