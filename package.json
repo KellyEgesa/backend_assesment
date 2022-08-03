@@ -5,6 +5,7 @@
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
     "eslint": "^8.21.0",
+    "prisma": "^4.1.1",
     "typescript": "^4.7.4"
   },
   "name": "topupmama",
@@ -20,10 +21,15 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/client": "^4.1.1",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "helmet": "^5.1.1",
+    "joi": "^17.6.0",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.21.3",

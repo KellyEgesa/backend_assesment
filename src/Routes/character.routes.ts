@@ -1,12 +1,9 @@
 import express from "express";
-import { CharacterService } from "../Models/Characters/characterService";
 
 const router = express.Router();
+const characterControllers = require("../Controllers/characters.controllers");
 
-router.get("/", async (req, res) => {
-  let responses: CharacterService = new CharacterService();
-  res.send(await responses.fetchCharacters(req, res));
-});
+router.get("/", characterControllers.get);
 
 // router.get("/:id", async (req, res) => {
 //   let responses: BookService = new BookService();
