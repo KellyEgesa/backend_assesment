@@ -18,9 +18,8 @@ export const utils = {
   },
 
   errorFunction(exception) {
-    console.log(exception);
     let returnError = localError;
-
+    console.log(exception);
     if (exception.message != null && exception.statusCode != null) {
       return exception;
     } else if (exception.response != null && exception.response.status == 404) {
