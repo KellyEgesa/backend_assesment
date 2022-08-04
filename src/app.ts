@@ -1,10 +1,10 @@
 import express from "express";
 
-require('dotenv').config()
+require("dotenv").config();
 const app = express();
 
 require("./Startup/routes")(app);
-require("./Startup/prod")(app);   
+require("./Startup/prod")(app);
 
 const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {

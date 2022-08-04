@@ -56,6 +56,7 @@ export const BookService = {
     }
 
     let individualUrlBook = urlBook + "/" + parameters;
+    let comment = await CommentRepository.getCommentCount(Number(parameters));
     let responses: Book;
     await axios.get<Book>(individualUrlBook).then((response) => {
       responses = response.data;
@@ -65,9 +66,7 @@ export const BookService = {
       responses.url,
       responses.name,
       responses.authors,
-      await (
-        await CommentRepository.getCommentCount(Number(parameters))
-      ).commentCount,
+      comment != null ? comment.commentCount : 0,
       responses.released
     );
 
