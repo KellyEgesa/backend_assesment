@@ -8,4 +8,6 @@ router.get("/", bookControllers.get);
 
 router.get("/:id", bookControllers.getById);
 
+router.get("/:id/comments", bookControllers.getComments);
+
 module.exports = router;

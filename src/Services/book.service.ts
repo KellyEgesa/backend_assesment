@@ -2,8 +2,10 @@ import axios from "axios";
 import { Book } from "../Models/books.model";
 import { url } from "../Utils/Strings";
 import { CommentRepository } from "../Repository/comment.repository";
+import { utils } from "../Utils/utils";
+import { Error } from "../Utils/error";
 
-let urlBook: string = url + "/books?pageSize=100";
+let urlBook: string = url + "books";
 
 export const BookService = {
   async fetchBooks() {
@@ -20,23 +22,42 @@ export const BookService = {
       });
     });
 
+    let comments = await CommentRepository.getAllCommentCount();
+
+    let commentsObj = {};
+
+    comments.forEach((element) => {
+      commentsObj[element.id] = element;
+    });
+
     responses.forEach((books, index, arr) => {
+      let urlSplit: string[] = books.url.split("/");
+      let id = parseInt(urlSplit[urlSplit.length - 1]);
+
       arr[index] = new Book(
         books.url,
         books.name,
         books.authors,
-        0,
+        comments[id] ? comments[id].commentCount : 0,
         books.released
       );
     });
 
     return responses;
   },
-  async fetchOneBook(parameters: string) {
-    if (isNaN(Number(parameters))) throw 422;
-    urlBook = urlBook + "/" + parameters;
+  async fetchOneBook(parameters: any) {
+    const { error } = utils.validateId(parameters);
+    if (error) {
+      let returnError = Error;
+      returnError.message = error.details[0].message;
+      returnError.statusCode = 422;
+
+      throw returnError;
+    }
+
+    let individualUrlBook = urlBook + "/" + parameters;
     let responses: Book;
-    await axios.get<Book>(urlBook).then((response) => {
+    await axios.get<Book>(individualUrlBook).then((response) => {
       responses = response.data;
     });
 
@@ -44,8 +65,26 @@ export const BookService = {
       responses.url,
       responses.name,
       responses.authors,
-      await CommentRepository.getBookComments(Number(parameters)),
+      await (
+        await CommentRepository.getCommentCount(Number(parameters))
+      ).commentCount,
       responses.released
+    );
+
+    return responses;
+  },
+  async fetchBookComment(parameters: any) {
+    const { error } = utils.validateId(parameters);
+    if (error) {
+      let returnError = Error;
+      returnError.message = error.details[0].message;
+      returnError.statusCode = 422;
+
+      throw returnError;
+    }
+
+    let responses = await CommentRepository.getBookComments(
+      parseInt(parameters)
     );
 
     return responses;
